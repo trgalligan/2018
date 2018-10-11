@@ -1,0 +1,37 @@
+# Thermal Analysis Challenge
+
+import numpy
+
+Qdot = 1200			#[W]
+Arad = 1			#Individual radiator area [m^2]
+Nrad = 2			#Number of radiators []
+epsilon = 0.85		#Emissivity [] (1)
+alpha = 0.08		#Absorbtivity [] (1)
+theta_deg = 23.5	#Solar incidence angle [°]
+
+sigma = 5.67E-8		#Stefan Boltzmann constant [W/m^2-K]
+T_ds = 2.7			#Deep space temperature [K] (2)
+G_s = 1370			#Solar flux [W/m^2] (3)
+
+
+# Find surface temperature of radiator
+T_surface = ( Qdot / (Nrad*Arad*epsilon*sigma) - T_ds**4 ) ** 0.25
+print("\nRadiator surface temperature = %3.3f K" % T_surface)
+
+# Find surface temperature when sun is incident on one radiator
+theta = 23.5 * numpy.pi /180
+Qnet = Qdot + G_s * Arad * alpha * numpy.sin(theta)
+T_surface2 = ( Qnet / (Nrad*Arad*epsilon*sigma) - T_ds**4 ) ** 0.25
+print("Radiator surface temperature with incident sunlight = %3.3f K\n" % T_surface2)
+
+# Sources
+# 1: Optical Solar Reflectors Datasheet
+# www.qioptiq.com/download/Qipotiq_SolarReflectors_datasheet_Aug2012.pdf
+#
+# 2: NASA Space Facts Info Sheet
+# https://helios.gsfc.nasa.gov/qa_sp_ht.html
+#
+# 3: Global Energy Cycle notes
+# https://www.ess.uci.edu/~yu/class/ess55/lecture.3.energy.pdf
+#
+# 4: MIT 2.55 notes, taken by Tim Galligan
